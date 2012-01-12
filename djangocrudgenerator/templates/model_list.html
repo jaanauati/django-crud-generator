@@ -1,0 +1,21 @@
+{{"{"}}# coding: utf8 #{{"}"}}
+
+<a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:create %{{"}"}}">New {{modelname}}</a> 
+<table class="model-list-table {{modelname}}-list-table">
+<thead class="model-list-table-thead {{modelname}}-list-table-thead">
+    <tr class="model-list-table-thead-tr {{modelname}}-list-table-thead-tr">
+        <th class="model-list-table-tr-th-object {{modelname}}-list-table-tr-th-object">{{modelname}} </th> 
+        <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Actions</th> </tr>
+</thead>
+<tbody class="model-list-table-tbody {{modelname}}-list-table-tbody">
+{{"{"}}% for obj in object_list %{{"}"}}
+    <tr class="model-list-table-tr {{modelname}}-list-table-tr">
+        <td class="model-list-table-tr-td-object {{modelname}}-list-table-tr-td-object">{{"{"}}{{"{"}}obj{{"}"}}{{"}"}}</td>
+        <td model-list-table-tr-td-actions {{modelname}}-list-table-tr-td-actions>
+            <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:update obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-edit {{modelname}}-list-table-tr-td-actions-edit">edit</a>
+            <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:delete obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-delete {{modelname}}-list-table-tr-td-actions-delete">delete</a>
+        </td>
+    </tr>
+{{"{"}}% endfor %{{"}"}}
+</tbody>
+</table>
