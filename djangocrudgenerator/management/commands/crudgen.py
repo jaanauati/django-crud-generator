@@ -112,4 +112,4 @@ class Command(BaseCommand):
         generator.create_templates()
         generator.create_views()
         generator.create_urls()
-        self.stdout.write('%s.%s CRUD created succesfully.\n' % (app_name, model_name))
+        self.stdout.write('%s.%s CRUD succesfully created.\n' % (app_name, model_name))
