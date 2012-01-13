@@ -1,0 +1,12 @@
+DESCRIPTION:
+    This example is a fast demostration of the djangocrudgen app.
+    Before of the execution of djangocrudgen, the application 'yourwebapp' 
+    just has only one model named 'YourModel'. After the execution of the 
+    'crudgen' generator, all CRUD interfaces will be created .
+
+        USAGE:
+    $ python manage.py syncdb
+    $ python manage.py crudgen yourwebapp YourModel
+    $ python manage.py runserver
+
+    go to http://localhost:8000/yourwebapp/yourmodel/list/page1/ 

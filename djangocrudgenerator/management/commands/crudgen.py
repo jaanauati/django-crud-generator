@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
-from django import template
 from django.template import loader, Context
+from django.template.loader import get_template, select_template
+from django import template
+
 import os
 import djangocrudgenerator
 
@@ -34,10 +36,19 @@ class ModelCRUDGenerator(object):
         return os.path.dirname(djangocrudgenerator.__file__)
     @classmethod
     def render_template(cObj, template_name, context_data):
-        templ_fullpath="%s/%s" % (cObj.get_crudgen_dir()+"/templates",
-                                  template_name)
-        return loader.get_template(templ_fullpath).render(
-                        Context(context_data))
+        templ_fullpath_alternative="%s/%s" % (cObj.get_crudgen_dir()+
+                                                "/templates",
+                                              template_name)
+        template= cObj.get_template(
+            template_name,
+            templ_fullpath_alternative)
+        return template.render(Context(context_data))
+    @classmethod
+    def get_template(cObj, templ_name, alternative_tmpl):
+        return select_template([cObj.gen_template_name(templ_name),alternative_tmpl])
+    @classmethod
+    def gen_template_name(cObj, name):
+        return 'djangocrudgenerator/'+name
     def get_app_templates_dirs(self):
         base=self.get_app_dir()+"/templates"
         app=base+"/"+self.appname
@@ -55,9 +66,10 @@ class ModelCRUDGenerator(object):
         for sufix in sufixes:
             templ_templ_name="model_%s.html" % sufix
             templ_name="%s_%s.html" % (self.modelname.lower(), sufix)
-            templ_templ_fullpath="%s/%s" % (
+            templ_templ_fullpath_alternative="%s/%s" % (
                     self.get_crudgen_dir()+"/templates",
                     templ_templ_name)
+            templ_templ_fullpath = self.gen_template_name(templ_templ_name)
             templ_fullpath="%s/%s" % (self.get_app_templates_dirs()[-1],
                                 templ_name)
 
@@ -67,8 +79,10 @@ class ModelCRUDGenerator(object):
                 'template':sufix,
             }) 
             out = file(templ_fullpath,"w")
-            currentTempl=loader.get_template(templ_templ_fullpath).render(c)
-            out.write(currentTempl)
+            template=loader.select_template(
+                [templ_templ_fullpath, 
+                templ_templ_fullpath_alternative])
+            out.write(template.render(c))
             out.close()
     def create_views(self):
         """ This method does the following:

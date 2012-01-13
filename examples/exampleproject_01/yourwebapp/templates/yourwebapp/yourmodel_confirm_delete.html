@@ -1,0 +1,11 @@
+{# coding: utf8 #}
+
+<div id="YourModel_confirm_delete_header" class="model-confirm-delete-header YourModel-confirm-delete-header">
+Are you sure to delete "{{ object }}"?
+</div>
+<form action="." method="post" name="YourModel_delete" class="model-confirm-delete-form YourModel-confirm-delete-form">
+    {% csrf_token %}
+{{ form }}
+    <input type="submit" value="Ok" class="model-confirm-delete-submitYourModel-confirm-delete-submit"/>
+    <a href="{% url yourwebapp:yourmodel:list page=1 %}" class="model-confirm-delete-form-cancel YourModel-confirm-delete-form-cancel">Cancel </a>
+</form>

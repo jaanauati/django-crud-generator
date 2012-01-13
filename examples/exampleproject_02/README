@@ -1,0 +1,12 @@
+DESCRIPTION:
+    This example shows the usage of custom templates for the CRUD generation.
+    All templates are stored into the templates directory of the project (see 
+    'templates' of the project).
+
+USAGE:
+    $ python manage.py syncdb
+    $ python manage.py crudgen yourwebapp YourModel
+    $ python manage.py runserver
+
+    goto http://localhost:8000/yourwebapp/yourmodel/list/page1/
+    

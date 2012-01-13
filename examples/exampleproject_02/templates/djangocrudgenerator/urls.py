@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from views import {{modelname}}ListView, {{modelname}}UpdateView, {{modelname}}CreateView, {{modelname}}DeleteView
 
+# MODEL URLS
 {{modelname|lower}}_patterns= patterns('',
     url(r'^list/page(?P<page>[0-9]+)/(\?.*)?$', 
         {{modelname}}ListView.as_view(),
