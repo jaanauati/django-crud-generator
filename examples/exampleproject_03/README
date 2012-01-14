@@ -1,0 +1,16 @@
+DESCRIPTION:
+    This example shows an more advanced usage of djangocrudgenerator:
+    Shows how to overwrite the configuration of the generator by defining of 
+    the DJANGOCRUDGENERATOR_SETTINGS variable into the project settings file 
+    (settings.py) to add an extra file to the generation (forms.py).
+    For more see the following files:
+        - At the bottom of the settings.py
+        - templates/djangocrudgenerator/form.py   
+
+USAGE:
+    $ python manage.py syncdb
+    $ python manage.py crudgen yourwebapp YourModel
+    $ python manage.py runserver
+
+    goto http://localhost:8000/yourwebapp/yourmodel/list/page1/
+    
