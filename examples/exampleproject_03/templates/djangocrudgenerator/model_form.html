@@ -1,0 +1,22 @@
+{{"{"}}# coding: utf8 #{{"}"}}
+{{"{"}}% if object %{{"}"}}
+<div id="{{modelname}}_form_header" class="object-form-header {{modelname}}-form-header">
+Editing {{"{"}}{{"{"}}object{{"}"}}{{"}"}}
+</div>
+{{"{"}}% else %{{"}"}}
+Create new {{modelname}}
+{{"{"}}% endif %{{"}"}}
+<form action="." method="post" name="{{modelname}}_form" class="model-form {{modelname}}-form">
+    {{"{"}}% csrf_token %{{"}"}}
+    <table class="model-form-table {{modelname}}-form-table">
+        <tbody class="model-form-tbody {{modelname}}-form-tbody">
+            {{"{"}}{{"{"}}form.as_table{{"}"}}{{"}"}}
+            <tr class="model-form-table-tr {{modelname}}-form-table-tr">
+                <td colspan="2" class="model-form-table-tr-td {{modelname}}-form-table-tr-td">
+                    <input type="submit" value="Ok" class="model-form-submit {{modelname}}-form-submit"/>
+                    <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:list 1  %{{"}"}}" class="model-form-cancel {{modelname}}-form-cancel">Cancel </a>
+                </td>
+            </tr>
+       </tbody>
+  </table> 
+</form>

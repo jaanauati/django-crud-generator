@@ -100,13 +100,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'exampleproject_01.urls'
+ROOT_URLCONF = 'exampleproject_03.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     './yourwebapp/templates/',
+    './templates/',
 )
 
 INSTALLED_APPS = (
@@ -145,4 +146,38 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+
+
+"""
+Overrides the configuration file of the generator.
+"""
+DJANGOCRUDGENERATOR_SETTINGS = {
+    "files" : [\
+        {   "template":"model_form.html",
+            "name": "${appname}/templates/${appname}/${modelname_lower}_form.html",
+            "override":True,
+        },
+        {   "template":"model_confirm_delete.html",
+            "name": "${appname}/templates/${appname}/${modelname_lower}_confirm_delete.html",
+            "override":True,
+        },
+        {   "template":"model_list.html",
+            "name": "${appname}/templates/${appname}/${modelname_lower}_list.html",
+            "override":True,
+        },
+        {   "template":"views.py",
+            "name": "${appname}/views.py",
+            "override":False,
+        },
+        {   "template":"urls.py",
+            "name": "${appname}/urls.py",
+            "override":False,
+        },
+        {   "template":"forms.py",
+            "name": "${appname}/forms.py",
+            "override":False,
+        },
+    ]
 }
