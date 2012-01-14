@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import time
 from string import Template
 
 from django.core.management.base import BaseCommand, CommandError
@@ -83,27 +84,43 @@ class ModelCRUDGenerator(object):
                     raise ex
     def generate_files(self):
         settings = DJANGOCRUDGENERATOR_SETTINGS
-        for f in settings['files']:
-            template = f['template']
-            context_data={
-               'modelname':self.modelname,
-               'modelname_lower':self.modelname.lower(),
-               'appname':self.appname,
-               'template':template
-            }
-            raw_name = f['name']
-            override = f['override']
-            full_name=Template(raw_name).substitute(**context_data)
-            self.create_dirs(os.path.split(full_name)[0])
-            contents=self.render_template(template, context_data)
-            if override:
-                flags="w"
-            else:
-                flags="a+"
-            output=file(full_name, flags)
-            output.write(contents)
-            output.close()
-            print("Generated %s" % full_name)
+        try:
+            for f in settings['files']:
+                template = f['template']
+                context_data={
+                   'modelname':self.modelname,
+                   'modelname_lower':self.modelname.lower(),
+                   'appname':self.appname,
+                   'template':template
+                }
+                raw_name = f['name']
+                override = f.get('override',False)
+                backup = f.get('backup',bool(override))
+                full_name=Template(raw_name).substitute(**context_data)
+                self.create_dirs(os.path.split(full_name)[0])
+                contents=self.render_template(template, context_data)
+                if backup:
+                    backup_name = full_name+"."+str(int(time.time()))
+                    try:
+                        srcfile=file(full_name)
+                        backupfile=file(backup_name,"w")
+                        backupfile.write(srcfile.read())
+                        backupfile.close()
+                        srcfile.close()
+                    except IOError:
+                        pass
+                    else:
+                        print("Created Backup: %s" % backup_name)
+                if override:
+                    flags="w"
+                else:
+                    flags="a+"
+                output=file(full_name, flags)
+                output.write(contents)
+                output.close()
+                print("Generated: %s" % full_name)
+        except KeyError:
+            raise CommandError("Invalid configuration.")
 
 class Command(BaseCommand):
     args = '<app_name model_name ...>'
@@ -115,4 +132,4 @@ class Command(BaseCommand):
         except:
             raise CommandError("Invalid paramters.")
         ModelCRUDGenerator(app_name, model_name).generate_files()
-        self.stdout.write('%s.%s CRUD successfully created.\n' % (app_name, model_name))
+        self.stdout.write('%s.%s CRUD successfully generated.\n' % (app_name, model_name))
