@@ -18,7 +18,8 @@ setup(
         'djangocrudgenerator',
         'djangocrudgenerator/management',
         'djangocrudgenerator/management/commands',
-        'djangocrudgenerator/templates'
+        'djangocrudgenerator/templates',
+        'djangocrudgenerator/config'
     ],
     package_data= {
         '':['*.html'],
