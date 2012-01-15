@@ -1,18 +1,19 @@
 {{"{"}}# coding: utf8 #{{"}"}}
 
-<a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:create %{{"}"}}">New {{modelname}}</a> 
+<h1> OVERWIRTED TEMPLATE </h1>
+<a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:create %{{"}"}}" class="model-new {{modelname}}-new">New {{modelname}}</a> 
 {{"{"}}% if object_list %{{"}"}}
     <table class="model-list-table {{modelname}}-list-table">
     <thead class="model-list-table-thead {{modelname}}-list-table-thead">
         <tr class="model-list-table-thead-tr {{modelname}}-list-table-thead-tr">
             <th class="model-list-table-tr-th-object {{modelname}}-list-table-tr-th-object">{{modelname}} </th> 
-            <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Acciones</th> </tr>
+            <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Actions</th> </tr>
     </thead>
     <tbody class="model-list-table-tbody {{modelname}}-list-table-tbody">
     {{"{"}}% for obj in object_list %{{"}"}}
         <tr class="model-list-table-tr {{modelname}}-list-table-tr">
             <td class="model-list-table-tr-td-object {{modelname}}-list-table-tr-td-object">{{"{"}}{{"{"}}obj{{"}"}}{{"}"}}</td>
-            <td model-list-table-tr-td-actions {{modelname}}-list-table-tr-td-actions>
+            <td class="model-list-table-tr-td-actions {{modelname}}-list-table-tr-td-actions">
                 <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:update obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-edit {{modelname}}-list-table-tr-td-actions-edit">edit</a>
                 <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:delete obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-delete {{modelname}}-list-table-tr-td-actions-delete">delete</a>
             </td>
@@ -20,6 +21,22 @@
     {{"{"}}% endfor %{{"}"}}
     </tbody>
     </table>
+    {{"{"}}% if is_paginated %{{"}"}}
+        <div class="model-list-pagination {{modelname}}-list-pagination">
+            <span class="model-list-page-links">
+                {{"{"}}% if page_obj.has_previous %{{"}"}}
+                    <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:list page_obj.previous_page_number %{{"}"}}" class="model-list-page-links-previous {{modelname}}-list-page-links-next-previous">Previous</a>
+                {{"{"}}% endif %{{"}"}}
+                <span class="page-current">
+                    Page {{"{"}}{{"{"}} page_obj.number {{"}"}}{{"}"}} of {{"{"}}{{"{"}} page_obj.paginator.num_pages {{"}"}}{{"}"}}.
+                </span>
+                {{"{"}}% if page_obj.has_next %{{"}"}}
+                    <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:list page_obj.next_page_number %{{"}"}}" class="model-list-page-links-next {{modelname}}-list-page-links-next">Next</a>
+                {{"{"}}% endif %{{"}"}}
+            </span>
+        </div>
+    {{"{"}}% endif %{{"}"}}
+    {{"{"}}% endif %{{"}"}}
 {{"{"}}% else %{{"}"}}
     <p id="{{modelname|lower}}_list_not_found_msg" class="model-list-not-found-msg {{modelname|lower}}-list-not-found-msg"> No {{modelname|lower}}s found. </p>
 {{"{"}}% endif %{{"}"}}
