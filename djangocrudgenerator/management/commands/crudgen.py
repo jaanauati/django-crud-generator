@@ -29,7 +29,8 @@ class ModelCRUDGenerator(object):
         """
         model = self.get_model(appname, modelname)
         if not model:
-            raise CommandError("Invalid parameters: %s %s" % \
+            raise CommandError("Invalid parameters: %s %s.\nRemember that the "
+                    "target application must be in the INSTALLED_APPS." % \
                 (appname, modelname))
         self.model=model
         self.appname=appname
@@ -116,7 +117,7 @@ class ModelCRUDGenerator(object):
                 else:
                     flags="a+"
                 output=file(full_name, flags)
-                output.write(contents)
+                output.write(contents.encode('utf-8'))
                 output.close()
                 print("Generated: %s" % full_name)
         except KeyError:
@@ -127,9 +128,18 @@ class Command(BaseCommand):
     help = 'Generates a C.R.U.D. for the selected application model.'
     def handle(self, *args, **options):
         try:
-            app_name = args[0]
-            model_name=args[1]
+            appname = args[0]
+            modelname=args[1]
         except:
             raise CommandError("Invalid paramters.")
-        ModelCRUDGenerator(app_name, model_name).generate_files()
-        self.stdout.write('%s.%s CRUD successfully generated.\n' % (app_name, model_name))
+        ModelCRUDGenerator(appname, modelname).generate_files()
+        self.printSuccessLeyends(appname, modelname)
+    def printSuccessLeyends(self,appname, modelname):
+        t = Template("url(r'^${appname}/', include('${appname}.urls',"
+                     "namespace='${appname}'))")
+        cdata ={'appname':appname, 'modelname':modelname}
+        leyend = t.substitute(**cdata)
+        self.stdout.write('%s.%s CRUD successfully generated.\n' % (appname, modelname))
+        print("Remember that you need to add the following line to the "
+              "urlpatterns:")
+        print(leyend)

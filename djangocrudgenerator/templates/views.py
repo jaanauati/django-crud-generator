@@ -7,6 +7,7 @@ from models import {{modelname}}
 
 class {{modelname}}ListView(ListView):
     model={{modelname}}
+    paginate_by=20
 
 class {{modelname}}DeleteView(DeleteView):
     model={{modelname}}
