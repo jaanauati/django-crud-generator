@@ -1,20 +1,22 @@
 # -*- coding: UTF-8 -*-
 
-import os
-import time
-from string import Template
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.template import loader, Context
 from django.template.loader import get_template, select_template
 from django import template
+from django.contrib.contenttypes.models import ContentType
 
 from djangocrudgenerator.config.settings import DJANGOCRUDGENERATOR_SETTINGS
-from django.conf import settings
 try:
     DJANGOCRUDGENERATOR_SETTINGS = settings.DJANGOCRUDGENERATOR_SETTINGS
 except AttributeError:
     pass
+
+import os
+import time
+from string import Template
 import djangocrudgenerator
 
 class ModelCRUDGenerator(object):
@@ -40,10 +42,16 @@ class ModelCRUDGenerator(object):
         """ Returns the`modelname` class object. If either the application or
             the model is invalid, then `None` is returned.
         """
+        #try:
+        #    module=__import__(appname)
+        #    model = getattr(getattr(module,'models'), modelname)
+        #    return model
+        #except Exception, ex:
+        #    return None
         try:
-            module=__import__(appname)
-            model = getattr(getattr(module,'models'), modelname)
-            return model
+            return ContentType.objects.get(
+                        app_label=appname.lower(),
+                        model=modelname.lower()).model_class()
         except Exception, ex:
             return None
     @classmethod

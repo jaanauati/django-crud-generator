@@ -1,20 +1,27 @@
 {{"{"}}# coding: utf8 #{{"}"}}
 
+{{"{"}}% if perms.{{appname|lower}}.add_{{modelname|lower}} %{{"}"}}
 <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:create %{{"}"}}" class="model-new {{modelname}}-new">New {{modelname}}</a> 
+{{"{"}}% endif %{{"}"}}
 {{"{"}}% if object_list %{{"}"}}
     <table class="model-list-table {{modelname}}-list-table">
     <thead class="model-list-table-thead {{modelname}}-list-table-thead">
         <tr class="model-list-table-thead-tr {{modelname}}-list-table-thead-tr">
             <th class="model-list-table-tr-th-object {{modelname}}-list-table-tr-th-object">{{modelname}} </th> 
-            <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Actions</th> </tr>
+            <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Actions </th> 
+        </tr>
     </thead>
     <tbody class="model-list-table-tbody {{modelname}}-list-table-tbody">
     {{"{"}}% for obj in object_list %{{"}"}}
         <tr class="model-list-table-tr {{modelname}}-list-table-tr">
             <td class="model-list-table-tr-td-object {{modelname}}-list-table-tr-td-object">{{"{"}}{{"{"}}obj{{"}"}}{{"}"}}</td>
             <td class="model-list-table-tr-td-actions {{modelname}}-list-table-tr-td-actions">
+                {{"{"}}% if perms.{{appname|lower}}.change_{{modelname|lower}} %{{"}"}}
                 <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:update obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-edit {{modelname}}-list-table-tr-td-actions-edit">edit</a>
+                {{"{"}}% endif %{{"}"}}
+                {{"{"}}% if perms.{{appname|lower}}.delete_{{modelname|lower}} %{{"}"}}
                 <a href="{{"{"}}% url {{appname|lower}}:{{modelname|lower}}:delete obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-delete {{modelname}}-list-table-tr-td-actions-delete">delete</a>
+                {{"{"}}% endif %{{"}"}}
             </td>
         </tr>
     {{"{"}}% endfor %{{"}"}}
