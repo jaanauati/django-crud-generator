@@ -1,11 +1,9 @@
 {% load generatortags %}
-{% verbatim %}
-{# coding: utf8 #}
+{% start_comment %} coding: utf8 {% end_comment %}
 
 <div id="{{modelname}}_confirm_delete_header" class="model-confirm-delete-header {{modelname}}-confirm-delete-header">
-Are you sure to delete {{object}}?
+Are you sure to delete {% start_var %} object {% end_var %}?
 </div>
-{% endverbatim %}
 
 <form action="." method="post" name="{{modelname}}_delete" class="model-confirm-delete-form {{modelname}}-confirm-delete-form">
     {% start_tag %} csrf_token {% end_tag %}
