@@ -1,20 +1,21 @@
-{{"{"}}# coding: utf8 #{{"}"}}
-{{"{"}}% if object %{{"}"}}
+{% load generatortags %}
+{% start_comment %} coding: utf8 {% end_comment %}
+{% start_tag %} if object {% end_tag %}
 <div id="{{modelname}}_form_header" class="object-form-header {{modelname}}-form-header">
-Editing {{"{"}}{{"{"}}object{{"}"}}{{"}"}}
+Editing {{object}}
 </div>
-{{"{"}}% else %{{"}"}}
+{% start_tag %} else {% end_tag %}
 Create new {{modelname}}
-{{"{"}}% endif %{{"}"}}
+{% start_tag %} endif {% end_tag %}
 <form action="." method="post" name="{{modelname}}_form" class="model-form {{modelname}}-form">
-    {{"{"}}% csrf_token %{{"}"}}
+    {% start_tag %} csrf_token {% end_tag %}
     <table class="model-form-table {{modelname}}-form-table">
         <tbody class="model-form-tbody {{modelname}}-form-tbody">
-            {{"{"}}{{"{"}}form.as_table{{"}"}}{{"}"}}
+            {% start_var %} form.as_table {% end_var %}
             <tr class="model-form-table-tr {{modelname}}-form-table-tr">
                 <td colspan="2" class="model-form-table-tr-td {{modelname}}-form-table-tr-td">
                     <input type="submit" value="Ok" class="model-form-submit {{modelname}}-form-submit"/>
-                    <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:list" 1  %{{"}"}}" class="model-form-cancel {{modelname}}-form-cancel">Cancel </a>
+                    <a href="{% gen_url_tag appname|lower modelname|lower "list" page=1  %}" class="model-form-cancel {{modelname}}-form-cancel">Cancel </a>
                 </td>
             </tr>
        </tbody>

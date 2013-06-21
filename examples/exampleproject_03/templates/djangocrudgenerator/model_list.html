@@ -1,8 +1,9 @@
-{{"{"}}# coding: utf8 #{{"}"}}
+{% load generatortags %}
+{% start_comment %} coding: utf8 {% end_comment %}
 
 <h1> OVERWIRTED TEMPLATE </h1>
-<a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:create" %{{"}"}}" class="model-new {{modelname}}-new">New {{modelname}}</a> 
-{{"{"}}% if object_list %{{"}"}}
+<a href="{% gen_url_tag appname|lower modelname|lower "create" %}" class="model-new {{modelname}}-new">New {{modelname}}</a> 
+{% start_tag %} if object_list {% end_tag %}
     <table class="model-list-table {{modelname}}-list-table">
     <thead class="model-list-table-thead {{modelname}}-list-table-thead">
         <tr class="model-list-table-thead-tr {{modelname}}-list-table-thead-tr">
@@ -10,33 +11,35 @@
             <th class="model-list-table-tr-th-actions {{modelname}}-list-table-tr-th-actions"> Actions</th> </tr>
     </thead>
     <tbody class="model-list-table-tbody {{modelname}}-list-table-tbody">
-    {{"{"}}% for obj in object_list %{{"}"}}
+    {% start_tag %} for obj in object_list {% end_tag %}
         <tr class="model-list-table-tr {{modelname}}-list-table-tr">
-            <td class="model-list-table-tr-td-object {{modelname}}-list-table-tr-td-object">{{"{"}}{{"{"}}obj{{"}"}}{{"}"}}</td>
+            <td class="model-list-table-tr-td-object {{modelname}}-list-table-tr-td-object">{% start_var %} obj {% end_var %}</td>
             <td class="model-list-table-tr-td-actions {{modelname}}-list-table-tr-td-actions">
-                <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:update" obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-edit {{modelname}}-list-table-tr-td-actions-edit">edit</a>
-                <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:delete" obj.pk %{{"}"}}" class="model-list-table-tr-td-actions-delete {{modelname}}-list-table-tr-td-actions-delete">delete</a>
+                <a href="{% start_tag %} url "{{appname|lower}}:{{modelname|lower}}:update" obj.pk {% end_tag %}" class="model-list-table-tr-td-actions-edit {{modelname}}-list-table-tr-td-actions-edit">edit</a>
+                <a href="{% start_tag %} url "{{appname|lower}}:{{modelname|lower}}:delete" obj.pk {% end_tag %}" class="model-list-table-tr-td-actions-delete {{modelname}}-list-table-tr-td-actions-delete">delete</a>
             </td>
         </tr>
-    {{"{"}}% endfor %{{"}"}}
+    {% start_tag %} endfor {% end_tag %}
     </tbody>
     </table>
-    {{"{"}}% if is_paginated %{{"}"}}
+    {% start_tag %} if is_paginated {% end_tag %}
         <div class="model-list-pagination {{modelname}}-list-pagination">
             <span class="model-list-page-links">
-                {{"{"}}% if page_obj.has_previous %{{"}"}}
-                    <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:list" page_obj.previous_page_number %{{"}"}}" class="model-list-page-links-previous {{modelname}}-list-page-links-next-previous">Previous</a>
-                {{"{"}}% endif %{{"}"}}
+                {% start_tag %} if page_obj.has_previous {% end_tag %}
+                    <a href="{% start_tag %} url "{{appname|lower}}:{{modelname|lower}}:list" page_obj.previous_page_number {% end_tag %}" class="model-list-page-links-previous {{modelname}}-list-page-links-next-previous">Previous</a>
+                {% start_tag %} endif {% end_tag %}
+                {% verbatim %}
                 <span class="page-current">
-                    Page {{"{"}}{{"{"}} page_obj.number {{"}"}}{{"}"}} of {{"{"}}{{"{"}} page_obj.paginator.num_pages {{"}"}}{{"}"}}.
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
-                {{"{"}}% if page_obj.has_next %{{"}"}}
-                    <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:list" page_obj.next_page_number %{{"}"}}" class="model-list-page-links-next {{modelname}}-list-page-links-next">Next</a>
-                {{"{"}}% endif %{{"}"}}
+                {% endverbatim %}
+                {% start_tag %}if page_obj.has_next {% end_tag %}
+                    <a href="{% start_tag %} url "{{appname|lower}}:{{modelname|lower}}:list" page_obj.next_page_number {% end_tag %}" class="model-list-page-links-next {{modelname}}-list-page-links-next">Next</a>
+                {% start_tag %} endif {% end_tag %}
             </span>
         </div>
-    {{"{"}}% endif %{{"}"}}
-{{"{"}}% else %{{"}"}}
+    {% start_tag %} endif {% end_tag %}
+{% start_tag %} else {% end_tag %}
     <p id="{{modelname|lower}}_list_not_found_msg" class="model-list-not-found-msg {{modelname|lower}}-list-not-found-msg"> No {{modelname|lower}}s found. </p>
-{{"{"}}% endif %{{"}"}}
+{% start_tag %} endif {% end_tag %}
 
