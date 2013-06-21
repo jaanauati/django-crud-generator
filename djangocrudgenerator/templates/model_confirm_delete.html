@@ -1,13 +1,17 @@
-{{"{"}}# coding: utf8 #{{"}"}}
+{% load generatortags %}
+{% verbatim %}
+{# coding: utf8 #}
 
 <div id="{{modelname}}_confirm_delete_header" class="model-confirm-delete-header {{modelname}}-confirm-delete-header">
-Are you sure to delete "{{"{"}}{{"{"}} object {{"}"}}{{"}"}}"?
+Are you sure to delete {{object}}?
 </div>
+{% endverbatim %}
+
 <form action="." method="post" name="{{modelname}}_delete" class="model-confirm-delete-form {{modelname}}-confirm-delete-form">
-    {{"{"}}% csrf_token %{{"}"}}
-{{"{"}}{{"{"}} form {{"}"}}{{"}"}}
+    {% start_tag %} csrf_token {% end_tag %}
+    {% start_var %} form {% end_var %}
     <div class="model-confirm-delete-buttons-bar {{modelname}}-confirm-delete-buttons-bar">
         <input type="submit" value="Ok" class="model-confirm-delete-submit{{modelname}}-confirm-delete-submit"/>
-        <a href="{{"{"}}% url "{{appname|lower}}:{{modelname|lower}}:list" page=1 %{{"}"}}" class="model-confirm-delete-form-cancel {{modelname}}-confirm-delete-form-cancel">Cancel </a>
+        <a href="{% gen_url_tag appname|lower modelname|lower "list" page=1 %}" class="model-confirm-delete-form-cancel {{modelname}}-confirm-delete-form-cancel">Cancel </a>
     </div>
 </form>
