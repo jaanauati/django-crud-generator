@@ -19,24 +19,26 @@ import time
 from string import Template
 import djangocrudgenerator
 
+
 class ModelCRUDGenerator(object):
     """ Generator helper."""
     def __init__(self, appname, modelname):
         """Initializes an ModelCRUDGenerator instance.
             - appname: the target application.
             - modelname: the target model.
-            If either the application is invalid or the model `modelname` does 
-            not exist inside the `models.py` file of the application, an  
+            If either the application is invalid or the model `modelname` does
+            not exist inside the `models.py` file of the application, an
             `CommandError` will be raised.
         """
         model = self.get_model(appname, modelname)
         if not model:
             raise CommandError("Invalid parameters: %s %s.\nRemember that the "
-                    "target application must be in the INSTALLED_APPS." % \
-                (appname, modelname))
-        self.model=model
-        self.appname=appname
-        self.modelname=modelname
+                               "target application must be in the "
+                               "INSTALLED_APPS." % (appname, modelname))
+        self.model = model
+        self.appname = appname
+        self.modelname = modelname
+
     @classmethod
     def get_model(cObj, appname, modelname):
         """ Returns the`modelname` class object. If either the application or
@@ -49,70 +51,76 @@ class ModelCRUDGenerator(object):
         #except Exception, ex:
         #    return None
         try:
-            return ContentType.objects.get(
-                        app_label=appname.lower(),
-                        model=modelname.lower()).model_class()
+            ctype = ContentType.objects.get(app_label=appname.lower(),
+                                            model=modelname.lower())
+            return ctype.model_class()
         except Exception, ex:
             return None
+
     @classmethod
     def get_crudgen_dir(cObj):
         """ Returns the installation directory of djangocrudgenerator. """
         return os.path.dirname(djangocrudgenerator.__file__)
+
     @classmethod
     def gen_template_name(cObj, name):
         return 'djangocrudgenerator/'+name
+
     @classmethod
     def get_template(cObj, templ_name, alternative_tmpl):
-        """ Finds the given template, the user can override the 
-            djangocrudgenerator self-contained template via the templates 
+        """ Finds the given template, the user can override the
+            djangocrudgenerator self-contained template via the templates
             directories ("templates/djangocrudgenerator").
             An Template instance will be returned.
         """
-        return select_template([cObj.gen_template_name(templ_name),alternative_tmpl])
+        return select_template([cObj.gen_template_name(templ_name),
+                                alternative_tmpl])
+
     @classmethod
     def render_template(cObj, template_name, context_data):
-        """ This method renders the template with the given context data and returns
-            the result."""
-        templ_fullpath_alternative="%s/%s" % (cObj.get_crudgen_dir()+
+        """ This method renders the template with the given context data and
+            returns the result."""
+        templ_fullpath_alternative = "%s/%s" % (cObj.get_crudgen_dir() +
                                                 "/templates",
-                                              template_name)
-        template= cObj.get_template(
-            template_name,
-            templ_fullpath_alternative)
+                                                template_name)
+        template = cObj.get_template(template_name,
+                                     templ_fullpath_alternative)
         return template.render(Context(context_data))
+
     @classmethod
     def create_dirs(cObj, pathname):
-        head,tail=os.path.split(pathname)
+        head, tail = os.path.split(pathname)
         if head:
             cObj.create_dirs(head)
         if tail:
             try:
-                os.mkdir(os.path.join(head,tail))
+                os.mkdir(os.path.join(head, tail))
             except Exception, ex:
                 if ex[0] != 17:
                     raise ex
+
     def generate_files(self):
         settings = DJANGOCRUDGENERATOR_SETTINGS
         try:
             for f in settings['files']:
                 template = f['template']
-                context_data={
-                   'modelname':self.modelname,
-                   'modelname_lower':self.modelname.lower(),
-                   'appname':self.appname,
-                   'template':template
+                context_data = {
+                    'modelname': self.modelname,
+                    'modelname_lower': self.modelname.lower(),
+                    'appname': self.appname,
+                    'template': template
                 }
                 raw_name = f['name']
-                override = f.get('override',False)
-                backup = f.get('backup',bool(override))
-                full_name=Template(raw_name).substitute(**context_data)
+                override = f.get('override', False)
+                backup = f.get('backup', bool(override))
+                full_name = Template(raw_name).substitute(**context_data)
                 self.create_dirs(os.path.split(full_name)[0])
-                contents=self.render_template(template, context_data)
+                contents = self.render_template(template, context_data)
                 if backup:
                     backup_name = full_name+"."+str(int(time.time()))
                     try:
-                        srcfile=file(full_name)
-                        backupfile=file(backup_name,"w")
+                        srcfile = file(full_name)
+                        backupfile = file(backup_name, "w")
                         backupfile.write(srcfile.read())
                         backupfile.close()
                         srcfile.close()
@@ -121,33 +129,37 @@ class ModelCRUDGenerator(object):
                     else:
                         print("Created Backup: %s" % backup_name)
                 if override:
-                    flags="w"
+                    flags = "w"
                 else:
-                    flags="a+"
-                output=file(full_name, flags)
+                    flags = "a+"
+                output = file(full_name, flags)
                 output.write(contents.encode('utf-8'))
                 output.close()
                 print("Generated: %s" % full_name)
         except KeyError:
             raise CommandError("Invalid configuration.")
 
+
 class Command(BaseCommand):
     args = '<app_name model_name ...>'
     help = 'Generates a C.R.U.D. for the selected application model.'
+
     def handle(self, *args, **options):
         try:
             appname = args[0]
-            modelname=args[1]
+            modelname = args[1]
         except:
             raise CommandError("Invalid paramters.")
         ModelCRUDGenerator(appname, modelname).generate_files()
         self.printSuccessLeyends(appname, modelname)
-    def printSuccessLeyends(self,appname, modelname):
+
+    def printSuccessLeyends(self, appname, modelname):
         t = Template("url(r'^${appname}/', include('${appname}.urls',"
                      "namespace='${appname}'))")
-        cdata ={'appname':appname, 'modelname':modelname}
+        cdata = {'appname': appname, 'modelname': modelname}
         leyend = t.substitute(**cdata)
-        self.stdout.write('%s.%s CRUD successfully generated.\n' % (appname, modelname))
+        self.stdout.write('%s.%s CRUD successfully generated.\n' % (appname,
+                                                                    modelname))
         print("Remember that you need to add the following line to the "
               "urlpatterns:")
         print(leyend)
