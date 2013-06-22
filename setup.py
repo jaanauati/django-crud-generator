@@ -18,6 +18,7 @@ setup(
         'djangocrudgenerator/management',
         'djangocrudgenerator/management/commands',
         'djangocrudgenerator/templates',
+        'djangocrudgenerator/templatetags',
         'djangocrudgenerator/config'
     ],
     package_data= {
