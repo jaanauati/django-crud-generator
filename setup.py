@@ -7,7 +7,7 @@ read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name = "django-crudgenerator",
-    version = "0.0.8",
+    version = "0.0.9",
     author = "Jonatan Alexis Anauati",
     author_email = "barakawins@gmail.com",
     description = ("A simple CRUD generator for django.",),
@@ -22,7 +22,7 @@ setup(
         'djangocrudgenerator/config'
     ],
     package_data= {
-        '':['*.html'],
+        '':['*.html', '*.txt'],
     },
     long_description=read('README',),
     classifiers=[

@@ -22,7 +22,8 @@ import djangocrudgenerator
 
 class ModelCRUDGenerator(object):
     """ Generator helper."""
-    def __init__(self, appname, modelname):
+
+    def __init__(self, settings, appname, modelname):
         """Initializes an ModelCRUDGenerator instance.
             - appname: the target application.
             - modelname: the target model.
@@ -35,6 +36,7 @@ class ModelCRUDGenerator(object):
             raise CommandError("Invalid parameters: %s %s.\nRemember that the "
                                "target application must be in the "
                                "INSTALLED_APPS." % (appname, modelname))
+        self.settings = settings
         self.model = model
         self.appname = appname
         self.modelname = modelname
@@ -90,9 +92,9 @@ class ModelCRUDGenerator(object):
     @classmethod
     def create_dirs(cObj, pathname):
         head, tail = os.path.split(pathname)
-        if head:
-            cObj.create_dirs(head)
         if tail:
+            if head:
+                cObj.create_dirs(head)
             try:
                 os.mkdir(os.path.join(head, tail))
             except Exception, ex:
@@ -100,9 +102,9 @@ class ModelCRUDGenerator(object):
                     raise ex
 
     def generate_files(self):
-        settings = DJANGOCRUDGENERATOR_SETTINGS
+        results = {'generated': [], 'backup': []}
         try:
-            for f in settings['files']:
+            for f in self.settings['files']:
                 template = f['template']
                 context_data = {
                     'modelname': self.modelname,
@@ -124,6 +126,7 @@ class ModelCRUDGenerator(object):
                         backupfile.write(srcfile.read())
                         backupfile.close()
                         srcfile.close()
+                        results['backup'].append(backup_name)
                     except IOError:
                         pass
                     else:
@@ -135,7 +138,9 @@ class ModelCRUDGenerator(object):
                 output = file(full_name, flags)
                 output.write(contents.encode('utf-8'))
                 output.close()
+                results['generated'].append(full_name)
                 print("Generated: %s" % full_name)
+            return results
         except KeyError:
             raise CommandError("Invalid configuration.")
 
@@ -150,7 +155,8 @@ class Command(BaseCommand):
             modelname = args[1]
         except:
             raise CommandError("Invalid paramters.")
-        ModelCRUDGenerator(appname, modelname).generate_files()
+        ModelCRUDGenerator(DJANGOCRUDGENERATOR_SETTINGS, appname, modelname) \
+            .generate_files()
         self.printSuccessLeyends(appname, modelname)
 
     def printSuccessLeyends(self, appname, modelname):
