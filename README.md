@@ -1,11 +1,10 @@
 ### Setup:
 
-1. Installation:
+* Installation:
 ```
 $ pip install -e git+git@github.com:jaanauati/django-crud-generator.git@master#egg=django-crud-generator
 ```
-
-1.  Add 'djangocrudgenerator' to the installed apps.
+*  Add 'djangocrudgenerator' to the installed apps.
 ```
 INSTALLED_APPS = (
     ...
@@ -17,7 +16,7 @@ INSTALLED_APPS = (
 
 ### USAGE:
 
-1. Supposing that you have created an application named 'yourwebapp', add the following to the project urlconf file (urls.py):
+* Supposing that you have created an application named 'yourwebapp', add the following to the project urlconf file (urls.py):
 ```
 urlpatterns = patterns('',
     ...
@@ -32,7 +31,7 @@ TEMPLATE_DIRS = (
     'path/to/yourwebapp/templates',
 )
 ```
-1. Add an example model to the 'yourwebapp' app:
+* Add an example model to the 'yourwebapp' app:
 ```
 #models.py
 class YourModel(models.Model):
@@ -46,7 +45,7 @@ and then synchronize your database (syncdb, south, evolution...).
 ```
 $ python manage.py crudgen yourwebapp YourModel
 ```
-1. To test the generated CRUD, first you must run the django development server:
+* To test the generated CRUD, first you must run the django development server:
 ```
 $ python manage.py runserver
 ```
