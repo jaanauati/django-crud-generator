@@ -1,12 +1,11 @@
-<b> INSTALL:
+### Setup:
 
-1. Just run:
+1. Installation:
 ```
 $ pip install -e git+git@github.com:jaanauati/django-crud-generator.git@master#egg=django-crud-generator
 ```
 
-<b> USAGE:
-1.  First, you must add the 'djangocrudgenerator' application into the settings file:
+1.  Add 'djangocrudgenerator' to the installed apps.
 ```
 INSTALLED_APPS = (
     ...
@@ -15,6 +14,9 @@ INSTALLED_APPS = (
     ...
 )
 ```
+
+### USAGE:
+
 1. Supposing that you have created an application named 'yourwebapp', add the following to the project urlconf file (urls.py):
 ```
 urlpatterns = patterns('',
