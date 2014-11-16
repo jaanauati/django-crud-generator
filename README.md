@@ -40,8 +40,7 @@ class YourModel(models.Model):
     def __str__(self):
         return self.name
 ```
-and then synchronize your database (syncdb, south, evolution...).
-1. Now you can use the crud generator. For example, if you want generate a CRUD for the 'YourModel' model, you must run the following command:
+* Now you can use the crud generator. For example, if you want generate a CRUD for the 'YourModel' model, you must run the following command:
 ```
 $ python manage.py crudgen yourwebapp YourModel
 ```
